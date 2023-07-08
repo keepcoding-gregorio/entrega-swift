@@ -5,7 +5,6 @@ public class HotelReservationManager {
     static private var idCounter: Int = 0
 
     private var reservations: Array<Reservation>
-//    private(set) var reservations: Array<Reservation>
     private var hotelName: String
     private var pricePerClient: Double
     
@@ -34,14 +33,14 @@ public class HotelReservationManager {
         return self.reservations
     }
     
-    /// Adds a new reservation to the manager.
+    /// Adds a new reservation to the hotel.
     ///
     /// - Parameters:
-    ///   - clients: The list of clients for the reservation.
-    ///   - duration: The duration of the reservation in days.
+    ///   - clientsList: The list of clients for the reservation.
+    ///   - durationInDays: The duration of the reservation in days.
     ///   - breakfastIncluded: A flag indicating whether breakfast is included in the reservation.
     /// - Returns: The created `Reservation` object.
-    /// - Throws: A `ReservationError` if the reservation cannot be added.
+    /// - Throws: A `ReservationError` if the reservation cannot be added becaouse of duplicated id or client.
     public func addReservation(clientsList clients: Array<Client>, durationInDays duration: Int, breakfastIncluded: Bool) throws -> Reservation {
         let id = HotelReservationManager.idCounter + 1
 
@@ -74,11 +73,11 @@ public class HotelReservationManager {
     ///   - id: The ID of the reservation to cancel.
     /// - Throws: A `ReservationError` if the reservation cannot be canceled.
     public func cancelReservation(id: Int) throws {
-        guard let reservationIndex = reservations.firstIndex(where: { $0.id == id }) else {
+        guard let reservationIndex = self.reservations.firstIndex(where: { $0.id == id }) else {
             throw ReservationError.reservationNotFound(id: id)
         }
         
-        reservations.remove(at: reservationIndex)
+        self.reservations.remove(at: reservationIndex)
         print("Cancelled reservation with id \(id)")
     }
     
@@ -89,7 +88,7 @@ public class HotelReservationManager {
         return self.reservations.map({ $0.id })
     }
     
-    /// Gets the list of clients.
+    /// Gets the list of clients with a reservation.
     ///
     /// - Returns: An array of `Client` objects representing the clients.
     private func getClients() -> Array<Client> {
@@ -99,9 +98,9 @@ public class HotelReservationManager {
     /// Calculates the price for a reservation.
     ///
     /// - Parameters:
-    ///   - quantity: The total number of clients.
-    ///   - duration: The duration of the reservation in days.
-    ///   - extraIncluded: A flag indicating whether breakfast is included in the reservation.
+    ///   - totalClients: The total number of clients.
+    ///   - days: The duration of the reservation in days.
+    ///   - breakfastIncluded: A flag indicating whether breakfast is included in the reservation.
     /// - Returns: The calculated price for the reservation.
     private func calculatePrice(totalClients quantity: Int, days duration: Int, breakfastIncluded extraIncluded: Bool) -> Double {
         let coeficient: Double = extraIncluded ? 1.25 : 1

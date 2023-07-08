@@ -1,7 +1,7 @@
 import Foundation
 
 public enum ReservationError: LocalizedError, Equatable {
-
+    
     case duplicateId(id: Int)
     case duplicateClient(clients: Array<Client>)
     case reservationNotFound(id: Int)

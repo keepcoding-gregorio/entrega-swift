@@ -47,7 +47,7 @@ class HotelReservationManagerTests {
         do {
             let reservation4 = try manager.addReservation(clientsList: [vegeta], durationInDays: 2, breakfastIncluded: false)
             assert(manager.getReservations().count == initialReservationsCount + 3, "Total reservations should be \(initialReservationsCount + 3)")
-            assert(reservation4.id == (lastAddedId ?? 0) + 3, "Reservation matches id \((lastAddedId ?? 0) + 3) because last  reservation failed, so the id was not incremented")
+            assert(reservation4.id == (lastAddedId ?? 0) + 3, "Reservation should match id \((lastAddedId ?? 0) + 3) because last  reservation failed, so the id was not incremented")
             
         } catch {
             print(error.localizedDescription)
@@ -76,14 +76,14 @@ class HotelReservationManagerTests {
         
         let lastAddedId = manager.getReservations().last?.id
         
-        // Test case: cancel last reservation success
+        // Test case: cancel last reservation success -> should result in 1 less reservation in total quantity
         do {
             try manager.cancelReservation(id: lastAddedId!)
             assert(manager.getReservations().count == initialReservationsCount - 1, "After cancelling a reservation, total quantity of reservations should be \(initialReservationsCount - 1)")
         } catch {
             print(error.localizedDescription)
             
-            assertionFailure("Existing reservation should be able to cancel")
+            assertionFailure("Existing reservations should be able to cancel")
         }
         
         // Test case: Id of a new reservation after a cancellation is different from last successful reservation success
@@ -160,13 +160,13 @@ hotelReservationManagerTests.testAddReservation()
 hotelReservationManagerTests.testCancelReservation()
 hotelReservationManagerTests.testReservationPrice()
 
-// Test other order configuration
+// Test other order configuration -> Comment previous lines and uncomment next 3 lines
 
 //hotelReservationManagerTests.testCancelReservation()
 //hotelReservationManagerTests.testReservationPrice()
 //hotelReservationManagerTests.testAddReservation()
 
-// Test other order configuration
+// Test other order configuration -> Comment previous lines and uncomment next 3 lines
 
 //hotelReservationManagerTests.testReservationPrice()
 //hotelReservationManagerTests.testCancelReservation()
